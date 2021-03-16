@@ -50,7 +50,10 @@ const url = mongoose.connect(
 
 // require apis
 const productRoutes = require('./routes/product');
+const categoryRoutes = require('./routes/category');
+
 app.use('/api', productRoutes);
+app.use('/api', categoryRoutes);
 
 const port = process.env.PORT || 2021;
 
