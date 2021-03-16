@@ -33,27 +33,14 @@ const url = mongoose.connect(
 	}
 );
 
-// app.post('/', (req, res) => {
-// 	let user = new User();
-// 	user.name = req.body.name;
-// 	user.email = req.body.email;
-// 	user.password = req.body.password;
-
-// 	user.save((err) => {
-// 		if (err) {
-// 			res.json(err);
-// 		} else {
-// 			res.json('Successfully saved');
-// 		}
-// 	});
-// });
-
 // require apis
 const productRoutes = require('./routes/product');
 const categoryRoutes = require('./routes/category');
+const ownerRoutes = require('./routes/owner');
 
 app.use('/api', productRoutes);
 app.use('/api', categoryRoutes);
+app.use('/api', ownerRoutes);
 
 const port = process.env.PORT || 2021;
 
