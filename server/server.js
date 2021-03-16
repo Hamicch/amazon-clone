@@ -15,25 +15,6 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => {
-	res.json('Hello amazon clone');
-});
-
-app.post('/', (req, res) => {
-	let user = new User();
-	user.name = req.body.name;
-	user.email = req.body.email;
-	user.password = req.body.password;
-
-	user.save((err) => {
-		if (err) {
-			res.json(err);
-		} else {
-			res.json('Successfully saved!');
-		}
-	});
-});
-
 const url = mongoose.connect(
 	process.env.DATABASE,
 	{
@@ -51,6 +32,25 @@ const url = mongoose.connect(
 		}
 	}
 );
+
+// app.post('/', (req, res) => {
+// 	let user = new User();
+// 	user.name = req.body.name;
+// 	user.email = req.body.email;
+// 	user.password = req.body.password;
+
+// 	user.save((err) => {
+// 		if (err) {
+// 			res.json(err);
+// 		} else {
+// 			res.json('Successfully saved');
+// 		}
+// 	});
+// });
+
+// require apis
+const productRoutes = require('./routes/product');
+app.use('/api', productRoutes);
 
 const port = process.env.PORT || 2021;
 
