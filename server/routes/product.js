@@ -12,6 +12,9 @@ router.post('/products', upload.single('photo'), async (req, res) => {
 		product.description = req.body.description;
 		product.photo = req.file.location;
 		product.stockQuantity = req.body.stockQuantity;
+		product.ownerID = req.body.ownerID;
+		product.categoryID = req.body.categoryID;
+		product.price = req.body.price;
 		await product.save();
 
 		res.json({
@@ -46,10 +49,10 @@ router.get('/products', async (req, res) => {
 // GET request - Get a single product
 router.get('/products/:id', async (req, res) => {
 	try {
-		let product = await Product.find({ _id: req.params.id });
+		let product = await Product.findOne({ _id: req.params.id });
 
 		res.json({
-			// succcess: true,
+			succcess: true,
 			product: product,
 		});
 	} catch (err) {
@@ -63,6 +66,7 @@ router.get('/products/:id', async (req, res) => {
 // PUT request - Update a single product
 router.put('/products/:id', upload.single('photo'), async (req, res) => {
 	try {
+		console.log(req.body);
 		let product = await Product.findOneAndUpdate(
 			{ _id: req.params.id },
 			{
@@ -71,17 +75,19 @@ router.put('/products/:id', upload.single('photo'), async (req, res) => {
 					price: req.body.price,
 					category: req.body.categoryID,
 					photo: req.file.location,
+					stockQuantity: req.body.stockQuantity,
 					description: req.body.description,
 					owner: req.body.ownerID,
 				},
 			},
 			{
 				upsert: true,
+				// new: true,
 			}
 		);
 
 		res.json({
-			// succcess: true,
+			succcess: true,
 			updatedProduct: product,
 		});
 	} catch (err) {
@@ -95,7 +101,7 @@ router.put('/products/:id', upload.single('photo'), async (req, res) => {
 // DELETE request - Delete a product
 router.delete('/products/:id', async (req, res) => {
 	try {
-		let deletedProduct = await Product.findByIdAndDelete({
+		let deletedProduct = await Product.findOneAndDelete({
 			_id: req.params.id,
 		});
 

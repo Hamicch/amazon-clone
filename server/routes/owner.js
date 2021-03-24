@@ -1,14 +1,15 @@
 const router = require('express').Router();
 const Owner = require('../models/owner');
+const upload = require('../middlewares/upload-photo');
 
 // POST request - create  a new category
 
-router.post('/owner', async (req, res) => {
+router.post('/owners', upload.single('photo'), async (req, res) => {
 	try {
 		let owner = new Owner();
 		owner.name = req.body.name;
 		owner.about = req.body.about;
-		// owner.photo = req.body.photo;
+		owner.photo = req.file.location;
 
 		await owner.save();
 
@@ -30,7 +31,7 @@ router.get('/owners', async (req, res) => {
 		let owners = await Owner.find();
 
 		res.json({
-			// succcess: true,
+			succcess: true,
 			owners: owners,
 		});
 	} catch (err) {

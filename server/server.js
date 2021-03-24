@@ -3,17 +3,14 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');
+
 const path = require('path');
 const User = require('./models/user');
 
 dotenv.config({ path: path.resolve(__dirname + '/.env') });
 
 const app = express();
-
-//Middlewares
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
 const url = mongoose.connect(
 	process.env.DATABASE,
@@ -32,6 +29,12 @@ const url = mongoose.connect(
 		}
 	}
 );
+
+//Middlewares
+app.use(cors());
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // require apis
 const productRoutes = require('./routes/product');

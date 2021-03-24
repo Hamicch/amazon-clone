@@ -3,7 +3,7 @@ const Category = require('../models/category');
 
 // POST request - create  a new category
 
-router.post('/category', async (req, res) => {
+router.post('/categories', async (req, res) => {
 	try {
 		let category = new Category();
 		category.type = req.body.type;
@@ -12,7 +12,7 @@ router.post('/category', async (req, res) => {
 
 		res.json({
 			status: true,
-			massage: 'Successfully created a new  category',
+			message: 'Successfully created a new  category',
 		});
 	} catch (err) {
 		res.status(500).json({
