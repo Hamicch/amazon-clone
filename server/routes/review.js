@@ -18,14 +18,14 @@ router.post(
 			review.productID = req.params.productID;
 			review.user = req.decoded._id;
 
-			await Product.update({ $push: review._id });
+			await Product.update({ $push: { reviews: review._id } });
 
 			const saveReview = await review.save();
 
 			if (saveReview) {
 				res.json({
 					success: true,
-					message: 'Succesfully Added Review',
+					message: 'Succesfully added review',
 				});
 			}
 		} catch (error) {
@@ -40,7 +40,9 @@ router.post(
 // Get request
 router.get('/reviews/:productID', async (req, res) => {
 	try {
-		let productReviews = await Review.find({ productID: req.params.productID })
+		const productReviews = await Review.find({
+			productID: req.params.productID,
+		})
 			.populate('user')
 			.exec();
 
