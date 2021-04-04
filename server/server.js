@@ -42,12 +42,14 @@ const categoryRoutes = require('./routes/category');
 const ownerRoutes = require('./routes/owner');
 const userRoutes = require('./routes/auth');
 const reviewsRoutes = require('./routes/review');
+const addressRoutes = require('./routes/address');
 
 app.use('/api', productRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', ownerRoutes);
 app.use('/api', userRoutes);
 app.use('/api', reviewsRoutes);
+app.use('/api', addressRoutes);
 
 const port = process.env.PORT || 2021;
 
