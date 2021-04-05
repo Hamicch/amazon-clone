@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const Review = require('../models/review');
 const Product = require('../models/product');
-const upload = require('../middlewares/upload-photo');
 const verifyToken = require('../middlewares/verify-token');
+const upload = require('../middlewares/upload-photo');
 
-// Post request
+// Review post API
 router.post(
 	'/reviews/:productID',
 	[verifyToken, upload.single('photo')],
@@ -15,39 +15,38 @@ router.post(
 			review.body = req.body.body;
 			review.rating = req.body.rating;
 			review.photo = req.file.location;
-			review.productID = req.params.productID;
 			review.user = req.decoded._id;
+			review.productID = req.params.productID;
 
-			await Product.update({ $push: { reviews: review._id } });
+			await Product.updateOne({ $push: { reviews: review._id } });
 
-			const saveReview = await review.save();
+			const savedReview = await review.save();
 
-			if (saveReview) {
+			if (savedReview) {
 				res.json({
 					success: true,
-					message: 'Succesfully added review',
+					message: 'Successfully added review!',
 				});
 			}
-		} catch (error) {
+		} catch (err) {
 			res.status(500).json({
 				success: false,
-				message: error.message,
+				message: err.message,
 			});
 		}
 	}
 );
 
-// Get request
 router.get('/reviews/:productID', async (req, res) => {
 	try {
-		const productReviews = await Review.find({
+		let productReviews = await Review.find({
 			productID: req.params.productID,
 		})
-			.populate('user')
+			.populate('User')
 			.exec();
 
 		res.json({
-			succcess: true,
+			success: true,
 			reviews: productReviews,
 		});
 	} catch (err) {

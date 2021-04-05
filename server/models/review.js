@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const ReviewSchema = new Schema({
 	headline: String,
-	body: Number,
-	rating: Number,
+	body: String,
+	ratings: Number,
 	photo: String,
 	productID: { type: Schema.Types.ObjectId, ref: 'Product' },
 	user: { type: Schema.Types.ObjectId, ref: 'User' },
